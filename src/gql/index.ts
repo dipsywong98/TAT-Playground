@@ -2,13 +2,31 @@ import { gql } from 'apollo-server';
 
 // import { IResolvers } from 'apollo-server';
 
+const echo = (
+  _: any,
+  { message }: { message: String },
+  ___: any,
+  ____: any
+): String => message;
+
 const base = {
   typeDef: gql`
     type Query {
-      hi: String!
+      echo(message: String!): String!
+    }
+
+    type Mutation {
+      echo(message: String!): String!
     }
   `,
-  resolver: {},
+  resolver: {
+    Query: {
+      echo
+    },
+    Mutation: {
+      echo
+    },
+  },
 };
 
 const modules = [base, require('./ping'), require('./ping2')];
