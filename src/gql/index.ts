@@ -1,40 +1,18 @@
-import { gql } from 'apollo-server';
+import { ApolloServer, PubSub } from 'apollo-server';
+import { base } from './base';
+import { formatError } from './format-error';
 
-// import { IResolvers } from 'apollo-server';
-
-const echo = (
-  _: any,
-  { message }: { message: String },
-  ___: any,
-  ____: any
-): String => message;
-
-const base = {
-  typeDef: gql`
-    type Query {
-      echo(message: String!): String!
-    }
-
-    type Mutation {
-      echo(message: String!): String!
-    }
-  `,
-  resolver: {
-    Query: {
-      echo
-    },
-    Mutation: {
-      echo
-    },
-  },
-};
-
-const modules = [base, require('./ping'), require('./ping2')];
+const modules = [
+  base,
+  require('./queries/ping'),
+  require('./queries/ping2'),
+  require('./mutations/login'),
+];
 
 // export const resolvers:IResolvers = modules.map(m => m.resolver).filter(res => !!res);
-export const typeDefs = modules.map(m => m.typeDef).filter(res => !!res);
+const typeDefs = modules.map(m => m.typeDef).filter(res => !!res);
 
-export const resolvers = modules.reduce((prev, { resolver }) => {
+const resolvers = modules.reduce((prev, { resolver }) => {
   Object.keys(resolver).forEach(key => {
     Object.keys(resolver[key]).forEach(method => {
       if (!(key in prev)) {
@@ -46,3 +24,11 @@ export const resolvers = modules.reduce((prev, { resolver }) => {
   });
   return prev;
 }, {});
+
+const pubsub = new PubSub();
+export const server = new ApolloServer({
+  resolvers,
+  typeDefs,
+  context: { pubsub },
+  formatError,
+});

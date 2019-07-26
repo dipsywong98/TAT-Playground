@@ -1,9 +1,4 @@
-import { ApolloServer, PubSub } from 'apollo-server';
-
-import { resolvers, typeDefs } from './gql';
-
-const pubsub = new PubSub();
-const server = new ApolloServer({ resolvers, typeDefs, context: { pubsub } });
+import { server } from './gql';
 
 server.listen().then(({ url }) => console.log(`Server ready at ${url}. `));
 
