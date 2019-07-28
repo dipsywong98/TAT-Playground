@@ -9,8 +9,11 @@
     "both": "concurrently --kill-others-on-fail \"npm run watch\" \"npm run dev\"",
     "watch": "webpack --config webpack.dev.js",
     "dev": "node --inspect dist/index.js",
-    "test": "jest --verbose",
-    "lint": "tslint -c tslint.json -t code-frame lib/**/*.ts"
+    "test": "cross-env NODE_ENV=test jest --verbose",
+    "lint": "tslint -c tslint.json -t code-frame lib/**/*.ts",
+    "migrate:prod": "cross-env NODE_ENV=prod ts-node ./node_modules/typeorm/cli.js -f ./src/config/orm migration:run",
+    "migrate:dev": "cross-env NODE_ENV=dev ts-node ./node_modules/typeorm/cli.js -f ./src/config/orm migration:run",
+    "migrate:test": "cross-env NODE_ENV=test ts-node ./node_modules/typeorm/cli.js -f ./src/config/orm migration:run"
   },
   "author": ".zinc team",
   "license": "ISC",
@@ -43,6 +46,7 @@
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",
     "tsc-watch": "^2.2.1",
+    "tslint": "^5.18.0",
     "typescript": "^3.5.3",
     "webpack": "^4.35.3",
     "webpack-cli": "^3.3.6",

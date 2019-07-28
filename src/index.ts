@@ -1,6 +1,6 @@
 import { server } from './gql';
 import { createConnection, Connection, getConnection } from 'typeorm';
-import { ormConfig } from './config/orm';
+import ORMConfig from './config/orm';
 import { main } from './main';
 
 // /index.ts does not support HMR, dont try to debug this
@@ -11,7 +11,7 @@ let dbConnection: Connection | null = null;
 const bootstrap = async () => {
   await stop();
   try {
-    dbConnection = await createConnection(ormConfig);
+    dbConnection = await createConnection(ORMConfig);
   } catch (e) {
     dbConnection = await getConnection('default');
   }
