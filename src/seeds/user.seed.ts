@@ -1,4 +1,4 @@
-export const UserSeed = [
+export = [
   {
     username: 'admin',
     password: 'admin',

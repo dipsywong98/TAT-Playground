@@ -9,6 +9,7 @@
     "both": "concurrently --kill-others-on-fail \"npm run watch\" \"npm run dev\"",
     "watch": "webpack --config webpack.dev.js",
     "dev": "node --inspect dist/index.js",
+    "test:db": "cross-env NODE_ENV=test tsnode test/index.ts",
     "test": "cross-env NODE_ENV=test jest --verbose",
     "lint": "tslint -c tslint.json -t code-frame lib/**/*.ts",
     "migrate:prod": "cross-env NODE_ENV=prod ts-node ./node_modules/typeorm/cli.js -f ./src/config/orm migration:run",
