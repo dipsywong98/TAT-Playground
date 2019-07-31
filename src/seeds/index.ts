@@ -13,11 +13,17 @@ export const classSeeder = (
         return repoGetter().save(object);
       },
     ),
-  );
+  ).then(() => {
+    console.log(`Done seeding ${repoGetter().constructor.name}`);
+  });
 };
 
 export const classUnseeder = (repoGetter: () => Repository<any>) => {
-  return repoGetter().clear();
+  return repoGetter()
+    .clear()
+    .then(() => {
+      console.log(`Done unseeding ${repoGetter().constructor.name}`);
+    });
 };
 
 export const seed = async () => {

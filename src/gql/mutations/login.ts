@@ -11,7 +11,7 @@ export const typeDef = gql`
 
 export const login = async (
   _: any,
-  { username, password }: { username: string; password: string }
+  { username, password }: { username: string; password: string },
 ): Promise<string> => {
   if (await getUserRepo().findByUsernamePassword(username, password)) {
     return 'pong ' + username + ' ' + password;

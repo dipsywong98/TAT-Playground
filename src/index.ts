@@ -10,6 +10,7 @@ let dbConnection: Connection | null = null;
 
 const bootstrap = async () => {
   await stop();
+  console.log(process.env.NODE_ENV);
   try {
     dbConnection = await createConnection(ORMConfig);
   } catch (e) {
@@ -23,7 +24,7 @@ const bootstrap = async () => {
 };
 
 const stop = async () => {
-  const closePromises: Promise<any>[] = [];
+  const closePromises: Array<Promise<any>> = [];
   try {
     closePromises.push(server.stop());
   } catch (error) {

@@ -3,13 +3,13 @@ import { User } from '../models/user';
 
 declare var process: {
   env: {
-    NODE_ENV: 'prod' | 'dev' | 'test';
+    NODE_ENV: 'production' | 'development' | 'test';
   };
 };
 
 const entities: any = [User];
 
-const prod: ConnectionOptions = {
+const production: ConnectionOptions = {
   type: 'mysql',
   host: 'localhost',
   port: 3306,
@@ -23,7 +23,7 @@ const prod: ConnectionOptions = {
   subscribers: ['src/subscriber/**/*.ts'],
 };
 
-const dev: ConnectionOptions = {
+const development: ConnectionOptions = {
   type: 'mysql',
   host: 'localhost',
   port: 3306,
@@ -51,5 +51,5 @@ const test: ConnectionOptions = {
   subscribers: ['src/subscriber/**/*.ts'],
 };
 
-const ORMConfig = { prod, dev, test }[process.env.NODE_ENV];
+const ORMConfig = { production, development, test }[process.env.NODE_ENV];
 export = ORMConfig;
