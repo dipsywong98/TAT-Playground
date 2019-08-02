@@ -2,23 +2,23 @@ import { server } from './gql';
 import { createConnection, Connection, getConnection } from 'typeorm';
 import ORMConfig from './config/orm';
 import { main } from './main';
+import createLogger from './logger';
+const logger = createLogger('index');
 
 // /index.ts does not support HMR, dont try to debug this
 // it is expected that if this file changes, there will be either database connection error or apollo addr in use error
 
-let dbConnection: Connection | null = null;
-
 const bootstrap = async () => {
   await stop();
-  console.log(process.env.NODE_ENV);
+  logger.info(`environment: ${process.env.NODE_ENV}`);
   try {
-    dbConnection = await createConnection(ORMConfig);
+    await createConnection(ORMConfig);
   } catch (e) {
-    dbConnection = await getConnection('default');
+    await getConnection('default');
   }
-  console.log('db connected');
+  logger.info('Database connected');
   const { url } = await server.listen();
-  console.log(`Apollo Server ready at ${url}. `);
+  logger.info(`Apollo Server ready at ${url}. `);
 
   main();
 };
@@ -28,21 +28,21 @@ const stop = async () => {
   try {
     closePromises.push(server.stop());
   } catch (error) {
-    console.log('stop apollo server with error: ', error);
+    logger.error('stop apollo server with error: ', error);
   }
   await Promise.all(closePromises);
 };
 
-console.log('attempt to open');
+logger.info('attempt to open');
 
 if (module.hot) {
   module.hot.accept();
   module.hot.dispose(() => {
-    console.log('hot module disposed');
+    logger.info('hot module disposed');
     stop();
   });
 } else {
-  console.log('not hot');
+  logger.info('not hot');
 }
 
 bootstrap();

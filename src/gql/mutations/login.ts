@@ -17,6 +17,7 @@ export const login = async (
     return 'pong ' + username + ' ' + password;
   } else {
     throw new GqlError('invalid login username or password');
+    return '';
   }
 };
 
