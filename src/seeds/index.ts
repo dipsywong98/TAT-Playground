@@ -1,6 +1,6 @@
 import userSeed from './user.seed';
 import { createConnection, Repository } from 'typeorm';
-import { getUserRepo } from '../repositories';
+import { getUserRepo } from '../repositories/user';
 
 export const classSeeder = (
   repoGetter: () => Repository<any>,
@@ -14,6 +14,7 @@ export const classSeeder = (
       },
     ),
   ).then(() => {
+    // tslint:disable-next-line: no-console
     console.log(`Done seeding ${repoGetter().constructor.name}`);
   });
 };
@@ -22,6 +23,7 @@ export const classUnseeder = (repoGetter: () => Repository<any>) => {
   return repoGetter()
     .clear()
     .then(() => {
+      // tslint:disable-next-line: no-console
       console.log(`Done unseeding ${repoGetter().constructor.name}`);
     });
 };
