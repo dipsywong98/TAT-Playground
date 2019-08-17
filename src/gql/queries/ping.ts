@@ -8,8 +8,8 @@ export const typeDef = gql`
 
 export const resolver: IResolvers = {
   Query: {
-    ping: (): string => {
-      return 'pong';
+    ping: (_: any, __: any, { username }): string => {
+      return username;
     },
   },
 };

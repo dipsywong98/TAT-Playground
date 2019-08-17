@@ -1,6 +1,6 @@
 import userSeed from './user.seed';
-import { createConnection, Repository } from 'typeorm';
-import { getUserRepo } from '../repositories/user';
+import { Repository } from 'typeorm';
+import user from '../repositories/user';
 
 export const classSeeder = (
   repoGetter: () => Repository<any>,
@@ -29,11 +29,11 @@ export const classUnseeder = (repoGetter: () => Repository<any>) => {
 };
 
 export const seed = async () => {
-  await classSeeder(getUserRepo, userSeed);
+  await classSeeder(user.getRepo, userSeed);
 };
 
 export const unseed = async () => {
-  await classUnseeder(getUserRepo);
+  await classUnseeder(user.getRepo);
 };
 
 export { userSeed };

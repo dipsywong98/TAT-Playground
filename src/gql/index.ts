@@ -57,6 +57,10 @@ const pubsub = new PubSub();
 export const server = new ApolloServer({
   resolvers,
   typeDefs,
-  context: { pubsub },
+  context: ({ req }: { req: Request }) => ({
+    pubsub,
+    // @ts-ignore
+    username: req.headers['x-remote-user'],
+  }),
   formatError,
 });

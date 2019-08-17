@@ -5,8 +5,8 @@ import ORMConfig from '../config/orm';
 
 beforeAll(async (done) => {
   await createConnection(ORMConfig);
-  await user.getUserRepo().clear();
-  await user.getUserRepo().save([
+  await user.getRepo().clear();
+  await user.getRepo().save([
     {
       username: 'admin',
       password: 'admin',
@@ -22,11 +22,13 @@ beforeAll(async (done) => {
 describe('user repository', () => {
   describe('by username and password', () => {
     it('exist', async (done) => {
-      expect(await user.userByUsernamePassword('admin', 'admin')).toBeTruthy();
+      expect(
+        await user.findOneByUsernamePassword('admin', 'admin'),
+      ).toBeTruthy();
       done();
     });
     it('not exist', async (done) => {
-      expect(await user.userByUsernamePassword('admin', 'xxx')).toBeFalsy();
+      expect(await user.findOneByUsernamePassword('admin', 'xxx')).toBeFalsy();
       done();
     });
   });
